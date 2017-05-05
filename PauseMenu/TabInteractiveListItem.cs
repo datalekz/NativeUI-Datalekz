@@ -26,8 +26,7 @@ namespace NativeUI.PauseMenu
         protected const int MaxItemsPerView = 15;
         protected int _minItem;
         protected int _maxItem;
-        private bool _focused;
-        
+
         public void MoveDown()
         {
             Index = (1000 - (1000 % Items.Count) + Index + 1) % Items.Count;
@@ -91,13 +90,19 @@ namespace NativeUI.PauseMenu
             if (Game.IsControlJustPressed(0, Control.FrontendAccept) && Focused && Items[Index] is UIMenuCheckboxItem)
             {
                 Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1);
-                ((UIMenuCheckboxItem) Items[Index]).Checked = !((UIMenuCheckboxItem) Items[Index]).Checked;
+                ((UIMenuCheckboxItem)Items[Index]).Checked = !((UIMenuCheckboxItem)Items[Index]).Checked;
                 ((UIMenuCheckboxItem)Items[Index]).CheckboxEventTrigger();
             }
             else if (Game.IsControlJustPressed(0, Control.FrontendAccept) && Focused)
             {
                 Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1);
                 Items[Index].ItemActivate(null);
+            }
+            else if (Game.IsControlJustPressed(0, Control.FrontendAccept) && Focused && Items[Index] is UIMenuListItem)
+            {
+                var it = (UIMenuListItem)Items[Index];
+                Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1);
+                it.ListSelectedTrigger(it.Index);
             }
 
             if (Game.IsControlJustPressed(0, Control.FrontendLeft) && Focused && Items[Index] is UIMenuListItem)
@@ -134,7 +139,7 @@ namespace NativeUI.PauseMenu
             if (!Visible) return;
             base.Draw();
 
-            var res = UIMenu.GetScreenResolutionMantainRatio();
+            var res = UIMenu.GetScreenResolutionMaintainRatio();
 
             var alpha = Focused ? 120 : 30;
             var blackAlpha = Focused ? 200 : 100;
@@ -206,7 +211,7 @@ namespace NativeUI.PauseMenu
                 }
                 else if (Items[c] is UIMenuListItem)
                 {
-                    var convItem = (UIMenuListItem) Items[c];
+                    var convItem = (UIMenuListItem)Items[c];
 
                     var yoffset = 5;
                     var basePos =
@@ -256,8 +261,8 @@ namespace NativeUI.PauseMenu
                         if (Items[Index] is UIMenuCheckboxItem)
                         {
                             Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1);
-                            ((UIMenuCheckboxItem) Items[Index]).Checked = !((UIMenuCheckboxItem) Items[Index]).Checked;
-                            ((UIMenuCheckboxItem) Items[Index]).CheckboxEventTrigger();
+                            ((UIMenuCheckboxItem)Items[Index]).Checked = !((UIMenuCheckboxItem)Items[Index]).Checked;
+                            ((UIMenuCheckboxItem)Items[Index]).CheckboxEventTrigger();
                         }
                         else
                         {

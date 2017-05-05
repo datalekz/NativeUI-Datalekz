@@ -59,7 +59,7 @@ namespace NativeUI.PauseMenu
 
         public int Index;
         private bool _visible;
-        
+
         private Scaleform _sc;
         public void ShowInstructionalButtons()
         {
@@ -158,7 +158,7 @@ namespace NativeUI.PauseMenu
                     Tabs[Index].Active = false;
                     Tabs[Index].Focused = false;
                     Tabs[Index].Visible = false;
-                    Index = (1000 - (1000%Tabs.Count) + Index - 1)%Tabs.Count;
+                    Index = (1000 - (1000 % Tabs.Count) + Index - 1) % Tabs.Count;
                     Tabs[Index].Active = true;
                     Tabs[Index].Focused = false;
                     Tabs[Index].Visible = true;
@@ -173,7 +173,7 @@ namespace NativeUI.PauseMenu
                     Tabs[Index].Active = false;
                     Tabs[Index].Focused = false;
                     Tabs[Index].Visible = false;
-                    Index = (1000 - (1000%Tabs.Count) + Index + 1)%Tabs.Count;
+                    Index = (1000 - (1000 % Tabs.Count) + Index + 1) % Tabs.Count;
                     Tabs[Index].Active = true;
                     Tabs[Index].Focused = false;
                     Tabs[Index].Visible = true;
@@ -211,7 +211,7 @@ namespace NativeUI.PauseMenu
             Function.Call(Hash._SHOW_CURSOR_THIS_FRAME);
 
             
-            var res = UIMenu.GetScreenResolutionMantainRatio();
+            var res = UIMenu.GetScreenResolutionMaintainRatio();
             var safe = new PointF(300, 180);
             if (!HideTabs)
             {
@@ -266,9 +266,9 @@ namespace NativeUI.PauseMenu
 
                 for (int i = 0; i < Tabs.Count; i++)
                 {
-                    var activeSize = res.Width - 2*safe.X;
-                    activeSize -= 4*5;
-                    int tabWidth = (int) activeSize/Tabs.Count;
+                    var activeSize = res.Width - 2 * safe.X;
+                    activeSize -= 4 * 5;
+                    int tabWidth = (int)activeSize / Tabs.Count;
 
                     Game.EnableControlThisFrame(0, Control.CursorX);
                     Game.EnableControlThisFrame(0, Control.CursorY);
@@ -298,7 +298,7 @@ namespace NativeUI.PauseMenu
                         Tabs[Index].Active = false;
                         Tabs[Index].Focused = false;
                         Tabs[Index].Visible = false;
-                        Index = (1000 - (1000%Tabs.Count) + i)%Tabs.Count;
+                        Index = (1000 - (1000 % Tabs.Count) + i) % Tabs.Count;
                         Tabs[Index].Active = true;
                         Tabs[Index].Focused = true;
                         Tabs[Index].Visible = true;
