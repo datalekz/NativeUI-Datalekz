@@ -105,7 +105,7 @@ namespace NativeUI
         }
 
         public void Draw()
-        {
+        { 
             for (int i = 0; i < _bars.Count; i++)
             {
                 _bars[i].Draw(i * 10);
