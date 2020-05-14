@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Drawing;
 using Font = CitizenFX.Core.UI.Font;
 using CitizenFX.Core;
-using System.Drawing;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 
 namespace NativeUI.PauseMenu
 {
@@ -98,14 +98,14 @@ namespace NativeUI.PauseMenu
 
             if (Game.IsControlJustPressed(0, Control.PhoneSelect))
             {
-                Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1);
+                Game.PlaySound("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 OnItemSelect?.Invoke(Heists[Index]);
             }
 
             if (Game.IsControlJustPressed(0, Control.FrontendUp) || Game.IsControlJustPressed(0, Control.MoveUpOnly))
             {
                 Index = (1000 - (1000 % Heists.Count) + Index - 1) % Heists.Count;
-                Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1);
+                Game.PlaySound("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
 
                 if (Heists.Count <= MaxItemsPerView) return;
 
@@ -125,7 +125,7 @@ namespace NativeUI.PauseMenu
             else if (Game.IsControlJustPressed(0, Control.FrontendDown) || Game.IsControlJustPressed(0, Control.MoveDownOnly))
             {
                 Index = (1000 - (1000 % Heists.Count) + Index + 1) % Heists.Count;
-                Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1);
+                Game.PlaySound("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
 
                 if (Heists.Count <= MaxItemsPerView) return;
 
@@ -148,7 +148,7 @@ namespace NativeUI.PauseMenu
             base.Draw();
             if (Heists.Count == 0) return;
 
-            var res = UIMenu.GetScreenResolutionMaintainRatio();
+            var res = ScreenTools.ResolutionMaintainRatio;
 
             var activeWidth = res.Width - SafeSize.X * 2;
             var itemSize = new SizeF((int)activeWidth - 515, 40);
@@ -160,8 +160,8 @@ namespace NativeUI.PauseMenu
             var counter = 0;
             for (int i = _minItem; i < Math.Min(Heists.Count, _maxItem); i++)
             {
-                new UIResRectangle(SafeSize.AddPoints(new PointF(0, (itemSize.Height + 3) * counter)), itemSize, (Index == i && Focused) ? Color.FromArgb(fullAlpha, UnknownColors.White) : Color.FromArgb(blackAlpha, UnknownColors.Black)).Draw();
-                new UIResText(Heists[i].Name, SafeSize.AddPoints(new PointF(6, 5 + (itemSize.Height + 3) * counter)), 0.35f, Color.FromArgb(fullAlpha, (Index == i && Focused) ? UnknownColors.Black : UnknownColors.White)).Draw();
+                new UIResRectangle(SafeSize.AddPoints(new PointF(0, (itemSize.Height + 3) * counter)), itemSize, (Index == i && Focused) ? Color.FromArgb(fullAlpha, Colors.White) : Color.FromArgb(blackAlpha, Colors.Black)).Draw();
+                new UIResText(Heists[i].Name, SafeSize.AddPoints(new PointF(6, 5 + (itemSize.Height + 3) * counter)), 0.35f, Color.FromArgb(fullAlpha, (Index == i && Focused) ? Colors.Black : Colors.White)).Draw();
                 counter++;
             }
 
@@ -179,15 +179,17 @@ namespace NativeUI.PauseMenu
             else if (Heists[Index].Logo != null && Heists[Index].Logo.FileName != null &&
                      Heists[Index].Logo.IsGameTexture)
             {
-                var newLogo = new Sprite(Heists[Index].Logo.DictionaryName, Heists[Index].Logo.FileName, new PointF(), new SizeF(512, 256));
-                newLogo.Position = new PointF((int)res.Width - SafeSize.X - 512, SafeSize.Y);
-                newLogo.Color = Color.FromArgb(blackAlpha, 0, 0, 0);
+                var newLogo = new Sprite(Heists[Index].Logo.DictionaryName, Heists[Index].Logo.FileName, new PointF(), new SizeF(512, 256))
+                {
+                    Position = new PointF((int)res.Width - SafeSize.X - 512, SafeSize.Y),
+                    Color = Color.FromArgb(blackAlpha, 0, 0, 0)
+                };
                 newLogo.Draw();
             }
 
-            new UIResRectangle(new PointF((int)res.Width - SafeSize.X - 512, SafeSize.Y + 256), new SizeF(512, 40), Color.FromArgb(fullAlpha, UnknownColors.Black)).Draw();
-            new UIResText(Heists[Index].Name, new PointF((int)res.Width - SafeSize.X - 4, SafeSize.Y + 260), 0.5f, Color.FromArgb(fullAlpha, UnknownColors.White),
-                Font.HouseScript, UIResText.Alignment.Right).Draw();
+            new UIResRectangle(new PointF((int)res.Width - SafeSize.X - 512, SafeSize.Y + 256), new SizeF(512, 40), Color.FromArgb(fullAlpha, Colors.Black)).Draw();
+            new UIResText(Heists[Index].Name, new PointF((int)res.Width - SafeSize.X - 4, SafeSize.Y + 260), 0.5f, Color.FromArgb(fullAlpha, Colors.White),
+                Font.HouseScript, Alignment.Right).Draw();
 
             for (int i = 0; i < Heists[Index].ValueList.Count; i++)
             {
@@ -197,24 +199,20 @@ namespace NativeUI.PauseMenu
                 var label = Heists[Index].ValueList[i].Item2;
 
 
-                new UIResText(text, new PointF((int)res.Width - SafeSize.X - 506, SafeSize.Y + 260 + 42 + (40 * i)), 0.35f, Color.FromArgb(fullAlpha, UnknownColors.White)).Draw();
-                new UIResText(label, new PointF((int)res.Width - SafeSize.X - 6, SafeSize.Y + 260 + 42 + (40 * i)), 0.35f, Color.FromArgb(fullAlpha, UnknownColors.White), Font.ChaletLondon, UIResText.Alignment.Right).Draw();
+                new UIResText(text, new PointF((int)res.Width - SafeSize.X - 506, SafeSize.Y + 260 + 42 + (40 * i)), 0.35f, Color.FromArgb(fullAlpha, Colors.White)).Draw();
+                new UIResText(label, new PointF((int)res.Width - SafeSize.X - 6, SafeSize.Y + 260 + 42 + (40 * i)), 0.35f, Color.FromArgb(fullAlpha, Colors.White), Font.ChaletLondon, Alignment.Right).Draw();
             }
 
             if (!string.IsNullOrEmpty(Heists[Index].Description))
             {
                 var propLen = Heists[Index].ValueList.Count;
-                new UIResRectangle(new PointF((int) res.Width - SafeSize.X - 512, SafeSize.Y + 256 + 42 + 40*propLen),
-                    new SizeF(512, 2), Color.FromArgb(fullAlpha, UnknownColors.White)).Draw();
+                new UIResRectangle(new PointF((int)res.Width - SafeSize.X - 512, SafeSize.Y + 256 + 42 + 40 * propLen),
+                    new SizeF(512, 2), Color.FromArgb(fullAlpha, Colors.White)).Draw();
                 new UIResText(Heists[Index].Description,
-                    new PointF((int) res.Width - SafeSize.X - 508, SafeSize.Y + 256 + 45 + 40*propLen + 4), 0.35f,
-                    Color.FromArgb(fullAlpha, UnknownColors.White))
-                {
-                    WordWrap = new SizeF(508, 0),
-                }.Draw();
-
-                new UIResRectangle(new PointF((int) res.Width - SafeSize.X - 512, SafeSize.Y + 256 + 44 + 40*propLen),
-                    new SizeF(512, 45*(StringMeasurer.MeasureString(Heists[Index].Description)/500)),
+                    new PointF((int)res.Width - SafeSize.X - 508, SafeSize.Y + 256 + 45 + 40 * propLen + 4), 0.35f,
+                    Color.FromArgb(fullAlpha, Colors.White)) { Wrap = 508 }.Draw();
+                new UIResRectangle(new PointF((int)res.Width - SafeSize.X - 512, SafeSize.Y + 256 + 44 + 40 * propLen),
+                    new SizeF(512, 45 * (int)(ScreenTools.GetTextWidth(Heists[Index].Description, Font.ChaletLondon, 0.35f) / 500)),
                     Color.FromArgb(blackAlpha, 0, 0, 0)).Draw();
             }
         }

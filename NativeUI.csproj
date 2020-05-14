@@ -8,23 +8,23 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NativeUI</RootNamespace>
-    <AssemblyName>NativeUI</AssemblyName>
+    <AssemblyName>NativeUI.net</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>1</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -33,17 +33,42 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CitizenFX.Core">
-      <HintPath>packages\CitizenFX.Core.1.0.0\lib\net45\CitizenFX.Core.dll</HintPath>
+    <Reference Include="CitizenFX.Core.Client, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\source\repos\FiveM\packages\CitizenFX.Core.Client.1.0.2460\lib\net45\CitizenFX.Core.Client.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BigMessage.cs" />
+    <Compile Include="Controls.cs" />
+    <Compile Include="Elements\Sprite.cs" />
+    <Compile Include="Elements\TimerBars.cs" />
+    <Compile Include="Elements\UIResRectangle.cs" />
+    <Compile Include="Elements\UIResText.cs" />
+    <Compile Include="Items\UIMenuProgressItem.cs" />
+    <Compile Include="Items\UIMenuSeparatorItem.cs" />
+    <Compile Include="Items\UIMenuSliderHeritageItem.cs" />
+    <Compile Include="Items\UIMenuSliderItem.cs" />
+    <Compile Include="Colors.cs" />
     <Compile Include="InstructionalButton.cs" />
+    <Compile Include="Items\IListItem.cs" />
+    <Compile Include="Items\UIMenuCheckboxItem.cs" />
+    <Compile Include="Items\UIMenuColoredItem.cs" />
+    <Compile Include="Items\UIMenuDynamicListItem.cs" />
+    <Compile Include="Items\UIMenuItem.cs" />
+    <Compile Include="Items\UIMenuListItem.cs" />
+    <Compile Include="Items\UIMenuSliderProgressItem.cs" />
     <Compile Include="MenuPool.cs" />
+    <Compile Include="Panels\UIMenuColorPanel.cs" />
+    <Compile Include="Panels\UIMenuGridPanel.cs" />
+    <Compile Include="Panels\UIMenuHorizontalOneLineGridPanel.cs" />
+    <Compile Include="Panels\UIMenuPanel.cs" />
+    <Compile Include="Panels\UIMenuPercentagePanel.cs" />
+    <Compile Include="Panels\UIMenuStatisticsPanel.cs" />
+    <Compile Include="Panels\UIMenuVerticalOneLineGridPanel.cs" />
     <Compile Include="PauseMenu\TabItem.cs" />
     <Compile Include="PauseMenu\TabItemSimpleList.cs" />
     <Compile Include="PauseMenu\TabMissionSelectItem.cs" />
@@ -53,20 +78,15 @@
     <Compile Include="PauseMenu\TabView.cs" />
     <Compile Include="PointExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sprite.cs" />
+    <Compile Include="ScreenTools.cs" />
     <Compile Include="StringMeasurer.cs" />
-    <Compile Include="TimerBars.cs" />
     <Compile Include="UIMenu.cs" />
-    <Compile Include="UIMenuCheckboxItem.cs" />
-    <Compile Include="UIMenuColoredItem.cs" />
-    <Compile Include="UIMenuItem.cs" />
-    <Compile Include="UIMenuListItem.cs" />
-    <Compile Include="UIResRectangle.cs" />
-    <Compile Include="UIResText.cs" />
-    <Compile Include="UnknownColors.cs" />
+    <Compile Include="Windows\UIMenuHeritageWindow.cs" />
+    <Compile Include="Windows\UIMenuWindow.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <None Include="packages.config" />
+    <None Include="stream\NativeUI.ytd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

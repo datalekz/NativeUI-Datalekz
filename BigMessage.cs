@@ -14,7 +14,7 @@ namespace NativeUI
 
         public BigMessageHandler()
         {
-            
+
         }
 
         public async Task Load()
@@ -23,7 +23,7 @@ namespace NativeUI
             _sc = new Scaleform("MP_BIG_MESSAGE_FREEMODE");
             var timeout = 1000;
             var start = DateTime.Now;
-            while (!Function.Call<bool>(Hash.HAS_SCALEFORM_MOVIE_LOADED, _sc.Handle) && DateTime.Now.Subtract(start).TotalMilliseconds < timeout) await BaseScript.Delay(0);
+            while (!API.HasScaleformMovieLoaded(_sc.Handle) && DateTime.Now.Subtract(start).TotalMilliseconds < timeout) await BaseScript.Delay(0);
         }
 
         public void Dispose()
@@ -105,7 +105,7 @@ namespace NativeUI
                 _start = 0;
                 Dispose();
             }
-            
+
         }
     }
 
@@ -119,7 +119,7 @@ namespace NativeUI
             Tick += BigMessageThread_Tick;
         }
 
-        private async System.Threading.Tasks.Task BigMessageThread_Tick()
+        private async Task BigMessageThread_Tick()
         {
             MessageInstance.Update();
         }
